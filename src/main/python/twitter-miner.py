@@ -16,6 +16,7 @@
 import json
 import uuid
 import argparse
+import time
 from datetime import datetime
 
 # Twitter libs
@@ -23,9 +24,36 @@ from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
 
+# Snowplow libs
+from snowplow_tracker import Subject, Emitter, Tracker, SelfDescribingJson
+
 def save_tweet(data):
-  print "save_tweet"
-  print data
+  #print "save_tweet"
+  #print data
+
+  indata = data
+
+  e = Emitter(args.sp_collector_uri,protocol=args.sp_collector_protocol,port=int(args.sp_collector_port),method=args.sp_collector_method)
+  t = Tracker(emitters=e,namespace="cf",app_id=args.sp_app_id,encode_base64=True)
+
+  s1 = Subject()
+  s1.set_platform("web")
+  s1.set_user_id(str(indata.get("user_id")))
+  s1.set_lang(str(indata.get("lang")))
+  #s1.set_ip_address(str(indata.get("i_ip")))
+  s1.set_useragent(str(indata.get("source")))
+
+  t.set_subject(s1)
+
+  t.track_self_describing_event(SelfDescribingJson("iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0",{
+      "data":{
+        "data": indata
+      },
+      "schema": "iglu:com.rbox24/"+args.sp_app_id+"/jsonschema/1-0-0"
+  }))
+
+  t.flush()
+  print "Tweet sent to collector, time:",time.time()
 
 class StdOutListener(StreamListener):
     def on_data(self, data):
@@ -72,6 +100,11 @@ if __name__ == '__main__':
   parser.add_argument('--follow', default="2193645284,721938046472581120,799541035466637312")
   parser.add_argument('--show_raw', default="no")
   parser.add_argument('--save', default="no")
+  parser.add_argument('--sp_collector_uri', default="example.com")
+  parser.add_argument('--sp_collector_protocol', default="https")
+  parser.add_argument('--sp_collector_port', default="444")
+  parser.add_argument('--sp_collector_method', default="post")
+  parser.add_argument('--sp_app_id', default="snowplow_twitter_tracker")
 
   args = parser.parse_args()
   print "access_token:",args.access_token
@@ -81,6 +114,11 @@ if __name__ == '__main__':
   print "follow:",args.follow
   print "show_raw:",args.show_raw
   print "save:",args.save
+  print "sp_collector_uri:",args.sp_collector_uri
+  print "sp_collector_protocol:",args.sp_collector_protocol
+  print "sp_collector_port:",args.sp_collector_port
+  print "sp_collector_method:",args.sp_collector_method
+  print "sp_app_id:",args.sp_app_id
   print "--"
 
   print "Starting listening to Twitter..."
