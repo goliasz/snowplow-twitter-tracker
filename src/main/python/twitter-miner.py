@@ -82,7 +82,21 @@ class StdOutListener(StreamListener):
           print "-----------------------"
           #
           if args.save == "yes":
-            save_tweet({"user_id":user_id,"text":text,"screen_name":screen_name,"source":source,"id":id,"created_at":created_at,"location":location,"timestamp_ms":timestamp_ms,"lang":lang})
+            payload = {"user_id":user_id,
+                       "text":text,
+                       "screen_name":screen_name,
+                       "source":source,
+                       "id":id,
+                       "created_at":created_at,            
+                       "location":location,
+                       "timestamp_ms":timestamp_ms,
+                       "lang":lang}
+            if args.restrict_source == "yes":
+              follow_arr0 = args.follow.split(",")
+              if user_id in follow_arr0:
+                save_tweet(payload)
+            else
+              save_tweet(payload)
       except Exception, Argument:
           print "Unexpected Error!", Argument
           print(data)
@@ -100,6 +114,7 @@ if __name__ == '__main__':
   parser.add_argument('--follow', default="2193645284,721938046472581120,799541035466637312")
   parser.add_argument('--show_raw', default="no")
   parser.add_argument('--save', default="no")
+  parser.add_argument('--restrict_source', default="no")
   parser.add_argument('--sp_collector_uri', default="example.com")
   parser.add_argument('--sp_collector_protocol', default="https")
   parser.add_argument('--sp_collector_port', default="444")
@@ -114,6 +129,7 @@ if __name__ == '__main__':
   print "follow:",args.follow
   print "show_raw:",args.show_raw
   print "save:",args.save
+  print "restrict_source:",args.restrict_source
   print "sp_collector_uri:",args.sp_collector_uri
   print "sp_collector_protocol:",args.sp_collector_protocol
   print "sp_collector_port:",args.sp_collector_port

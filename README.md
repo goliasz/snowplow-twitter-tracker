@@ -20,7 +20,7 @@ $ export SP_COLLECTOR_PORT=443
 $ export SP_COLLECTOR_PROTOCOL="https"
 $ export SP_COLLECTOR_METHOD="post"
 $ cd snowplow-twitter-tracker
-$ sh src/main/script/twitter-miner.sh "1367531,14293310" "yes"
+$ sh src/main/script/twitter-miner.sh "1367531,14293310" "yes" "no"
 ```
 
 # License
