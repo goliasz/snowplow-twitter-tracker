@@ -57,19 +57,31 @@ def save_tweet(data):
 
 class StdOutListener(StreamListener):
     def on_data(self, data):
+      payload = None
       try:
           message = json.loads(data)
           if args.show_raw=="yes":
             print message
-          text = message.get("text").encode("ascii","ignore")
-          screen_name = str(message.get("user").get("screen_name")).encode("ascii","ignore")
-          source = str(message.get("source")).encode("ascii","ignore")
+          text = message.get("text")
+          if text:
+            text = text.encode("ascii","ignore")
+          screen_name = message.get("user").get("screen_name")
+          if screen_name:
+            screen_name = screen_name.encode("utf8","ignore")
+          source = message.get("source")
+          if source:
+            source = source.encode("ascii","ignore")
           id = message.get("id")
           created_at = message.get("created_at")
-          location = str(message.get("user").get("location")).encode("utf8")
+          location = message.get("user").get("location")
+          if location:
+            location = location.encode("ascii","ignore")
           timestamp_ms = message.get("timestamp_ms")
-          lang = str(message.get("lang")).encode("utf8")
+          lang = message.get("lang")
+          if lang:
+            lang = lang.encode("utf8")
           user_id = message.get("user").get("id")
+          """
           print "Text:\n",text
           print "Screen Name:",screen_name
           print "Source:",source
@@ -79,6 +91,7 @@ class StdOutListener(StreamListener):
           print "Location:",location
           print "lang:",lang
           print "user_id:",user_id
+          """
           print "-----------------------"
           #
           if args.save == "yes":
@@ -95,11 +108,12 @@ class StdOutListener(StreamListener):
               follow_arr0 = args.follow.split(",")
               if user_id in follow_arr0:
                 save_tweet(payload)
-            else
+            else:
               save_tweet(payload)
       except Exception, Argument:
           print "Unexpected Error!", Argument
-          print(data)
+          print data
+          print payload
       return True
 
     def on_error(self, status):
