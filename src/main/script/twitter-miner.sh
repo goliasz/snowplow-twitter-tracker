@@ -1,0 +1,1 @@
+python src/main/python/twitter-miner.py --follow="$1" --save="$2" --show_raw="$3" --access_token=$TWITTER_TOKEN --access_token_secret=$TWITTER_TOKEN_SECRET --consumer_key=$TWITTER_KEY --consumer_secret=$TWITTER_SECRET
