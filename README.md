@@ -15,7 +15,7 @@ $ export TWITTER_TOKEN_SECRET="<HERE TOKEN SECRET>"
 $ export TWITTER_KEY="<HERE KEY>" 
 $ export TWITTER_SECRET="<HERE KEY SECRET>"
 $ cd snowplow-twitter-tracker
-$ sh src/main/script/twitter-miner.sh "2193645284,721938046472581120,799541035466637312" "yes"
+$ sh src/main/script/twitter-miner.sh "1367531,14293310" "yes"
 ```
 
 # License

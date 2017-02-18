@@ -39,16 +39,22 @@ class StdOutListener(StreamListener):
           id = message.get("id")
           created_at = message.get("created_at")
           location = message.get("user").get("location")
+          timestamp_ms = message.get("timestamp_ms")
+          lang = message.get("lang")
+          user_id = message.get("user").get("id")
           print "Text:\n",text
           print "Screen Name:",screen_name
           print "Source:",source
           print "ID:",id
+          print "Timestamp [ms]:",timestamp_ms
           print "Created At:",created_at
           print "Location:",location
+          print "lang:",lang
+          print "user_id:",user_id
           print "-----------------------"
           #
           if args.save == "yes":
-            save_tweet({"text":text,"screen_name":screen_name,"source":source,"id":id,"created_at":created_at,"location":location})
+            save_tweet({"user_id":user_id,"text":text,"screen_name":screen_name,"source":source,"id":id,"created_at":created_at,"location":location,"timestamp_ms":timestamp_ms,"lang":lang})
       except Exception, Argument:
           print "Unexpected Error!", Argument
           print(data)
@@ -85,8 +91,9 @@ if __name__ == '__main__':
   stream = Stream(auth, l)
 
   follow_arr = args.follow.split(",")
+  print "follow_arr:",follow_arr
 
-  stream.filter(follow=[follow_arr])
+  stream.filter(follow=follow_arr)
 
 
 
