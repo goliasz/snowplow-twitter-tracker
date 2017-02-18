@@ -92,7 +92,7 @@ class StdOutListener(StreamListener):
           print "lang:",lang
           print "user_id:",user_id
           """
-          print "-----------------------"
+          #print "-----------------------"
           #
           if args.save == "yes":
             payload = {"user_id":user_id,
@@ -108,8 +108,10 @@ class StdOutListener(StreamListener):
               follow_arr0 = args.follow.split(",")
               if user_id in follow_arr0:
                 save_tweet(payload)
+                print payload
             else:
               save_tweet(payload)
+              print payload
       except Exception, Argument:
           print "Unexpected Error!", Argument
           print data
