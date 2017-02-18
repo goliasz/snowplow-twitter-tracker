@@ -61,14 +61,14 @@ class StdOutListener(StreamListener):
           message = json.loads(data)
           if args.show_raw=="yes":
             print message
-          text = message.get("text").encode("utf8")
-          screen_name = message.get("user").get("screen_name")
-          source = message.get("source")
+          text = message.get("text").encode("ascii","ignore")
+          screen_name = str(message.get("user").get("screen_name")).encode("ascii","ignore")
+          source = str(message.get("source")).encode("ascii","ignore")
           id = message.get("id")
           created_at = message.get("created_at")
-          location = message.get("user").get("location")
+          location = str(message.get("user").get("location")).encode("utf8")
           timestamp_ms = message.get("timestamp_ms")
-          lang = message.get("lang")
+          lang = str(message.get("lang")).encode("utf8")
           user_id = message.get("user").get("id")
           print "Text:\n",text
           print "Screen Name:",screen_name
