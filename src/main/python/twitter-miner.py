@@ -111,7 +111,7 @@ class StdOutListener(StreamListener):
                 print payload
               else:
                 print "Source",user_id," rejected"
-                print payload
+                #print payload
             else:
               save_tweet(payload)
               print payload
