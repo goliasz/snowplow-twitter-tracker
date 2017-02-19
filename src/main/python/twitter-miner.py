@@ -109,6 +109,9 @@ class StdOutListener(StreamListener):
               if user_id in follow_arr0:
                 save_tweet(payload)
                 print payload
+              else:
+                print "Source",user_id," rejected"
+                print payload
             else:
               save_tweet(payload)
               print payload
