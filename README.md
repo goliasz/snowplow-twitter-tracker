@@ -13,6 +13,16 @@ $ git clone https://github.com/goliasz/snowplow-twitter-tracker.git
 1. Create your app here https://apps.twitter.com/
 2. Generate your access token
 
+## Twitter User IDs
+
+You can find Twitter user ID using this page http://gettwitterid.com/
+
+## Parameters of twitter-miner.sh
+
+1. Comma separated list of user IDs you are going to follow.
+2. Push found tweets to collector (yes/no)
+3. Reject tweets only mentioning followed user (yes/no). If "yes" we will push to collector only tweets authored by followed user.
+
 ## Start
 ```
 $ export TWITTER_TOKEN="<HERE TOKEN>" 
