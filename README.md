@@ -11,8 +11,7 @@ $ git clone https://github.com/goliasz/snowplow-twitter-tracker.git
 ## Twitter Setup
 
 1. Create your app here https://apps.twitter.com/
-
-2. Generate you access token
+2. Generate your access token
 
 ## Start
 ```
