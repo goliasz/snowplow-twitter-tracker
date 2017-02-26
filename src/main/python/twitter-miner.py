@@ -103,6 +103,9 @@ class StdOutListener(StreamListener):
                        "created_at":created_at,            
                        "location":location,
                        "timestamp_ms":timestamp_ms,
+                       "geo_enabled":message.get("user").get("geo_enabled"),
+                       "user_name":message.get("user").get("name"),
+                       "retweet_count":message.get("retweet_count"),
                        "lang":lang}
             if args.restrict_source == "yes":
               follow_arr0 = args.follow.split(",")
