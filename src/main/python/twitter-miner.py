@@ -17,6 +17,7 @@ import json
 import uuid
 import argparse
 import time
+import base64
 from datetime import datetime
 
 # Twitter libs
@@ -95,6 +96,7 @@ class StdOutListener(StreamListener):
           #print "-----------------------"
           #
           if args.save == "yes":
+            data_b64 = base64.b64encode(data)
             payload = {"user_id":user_id,
                        "text":text,
                        "screen_name":screen_name,
@@ -106,6 +108,7 @@ class StdOutListener(StreamListener):
                        "geo_enabled":message.get("user").get("geo_enabled"),
                        "user_name":message.get("user").get("name"),
                        "retweet_count":message.get("retweet_count"),
+                       "datab64":data_b64,
                        "lang":lang}
             if args.restrict_source == "yes":
               follow_arr0 = args.follow.split(",")
