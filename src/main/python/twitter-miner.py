@@ -83,15 +83,15 @@ class StdOutListener(StreamListener):
             lang = lang.encode("utf8")
           user_id = message.get("user").get("id")
           """
-          print "Text:\n",text
-          print "Screen Name:",screen_name
-          print "Source:",source
+          #print "Text:\n",text
+          #print "Screen Name:",screen_name
+          #print "Source:",source
           print "ID:",id
-          print "Timestamp [ms]:",timestamp_ms
-          print "Created At:",created_at
-          print "Location:",location
-          print "lang:",lang
-          print "user_id:",user_id
+          #print "Timestamp [ms]:",timestamp_ms
+          #print "Created At:",created_at
+          #print "Location:",location
+          #print "lang:",lang
+          #print "user_id:",user_id
           """
           #print "-----------------------"
           #
@@ -114,17 +114,17 @@ class StdOutListener(StreamListener):
               follow_arr0 = args.follow.split(",")
               if user_id in follow_arr0:
                 save_tweet(payload)
-                print payload
+                #print payload
               else:
                 print "Source",user_id," rejected"
                 #print payload
             else:
               save_tweet(payload)
-              print payload
+              #print payload
       except Exception, Argument:
           print "Unexpected Error!", Argument
-          print data
-          print payload
+          #print data
+          #print payload
       return True
 
     def on_error(self, status):
