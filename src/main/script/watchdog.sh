@@ -14,8 +14,11 @@
 # limitations under the License.
 
 prog=$1
-if [[ $(pgrep -f $prog ) ]]; then
+pcnt=$(pgrep -cf "$prog")
+
+if [[ $pcnt > 1 ]]; then
    echo $prog+" is running";
+   echo $pcnt
 else
    echo $prog+" not running, so I must do something";
    # Make live again
