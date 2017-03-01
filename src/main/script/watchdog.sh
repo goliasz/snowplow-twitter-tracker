@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright KOLIBERO under one or more contributor license agreements.
 # KOLIBERO licenses this file to You under the Apache License, Version 2.0
@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-prog=./$1
-if [[ $(pgrep -f $prog) ]]; then
+prog=$1
+if [[ $(pgrep -f $prog ) ]]; then
    echo $prog+" is running";
 else
    echo $prog+" not running, so I must do something";
