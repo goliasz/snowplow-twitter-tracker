@@ -16,11 +16,17 @@
 prog=$1
 pcnt=$(pgrep -cf "$prog")
 
-if [[ $pcnt > 1 ]]; then
-   echo $prog+" is running";
+if [[ $pcnt > 2 ]]; then
+   echo "$prog is running";
    echo $pcnt
+   echo $(pgrep -lf "$prog")
 else
-   echo $prog+" not running, so I must do something";
+   echo "$prog not running, so I must do something";
    # Make live again
    $prog &
 fi
+
+# To check what we have in processes
+#echo $pcnt
+#echo $(pgrep -lf "$prog")
+
