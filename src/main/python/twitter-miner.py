@@ -173,7 +173,7 @@ if __name__ == '__main__':
   print "Tracker setup..."
   global emiter
   global tracker
-  emiter = Emitter(endpoint=args.sp_collector_uri, protocol=args.sp_collector_protocol, port=int(args.sp_collector_port), method=args.sp_collector_method)
+  emiter = Emitter(buffer_size=50, endpoint=args.sp_collector_uri, protocol=args.sp_collector_protocol, port=int(args.sp_collector_port), method=args.sp_collector_method)
   tracker = Tracker(emitters=emiter,namespace="cf",app_id=args.sp_app_id,encode_base64=True)
 
   print "Starting listening to Twitter..."
