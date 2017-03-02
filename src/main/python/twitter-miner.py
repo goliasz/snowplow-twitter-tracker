@@ -19,6 +19,7 @@ import argparse
 import time
 import base64
 from datetime import datetime
+import logging
 
 # Twitter libs
 from tweepy.streaming import StreamListener
@@ -28,14 +29,19 @@ from tweepy import Stream
 # Snowplow libs
 from snowplow_tracker import Subject, Emitter, Tracker, SelfDescribingJson
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.WARNING)
+
+emiter = None
+tracker = None
+
 def save_tweet(data):
-  #print "save_tweet"
+  global tracker
+  print "save_tweet:",__name__
   #print data
+  
 
   indata = data
-
-  e = Emitter(args.sp_collector_uri,protocol=args.sp_collector_protocol,port=int(args.sp_collector_port),method=args.sp_collector_method)
-  t = Tracker(emitters=e,namespace="cf",app_id=args.sp_app_id,encode_base64=True)
 
   s1 = Subject()
   s1.set_platform("web")
@@ -44,16 +50,16 @@ def save_tweet(data):
   #s1.set_ip_address(str(indata.get("i_ip")))
   s1.set_useragent(str(indata.get("source")))
 
-  t.set_subject(s1)
+  tracker.set_subject(s1)
 
-  t.track_self_describing_event(SelfDescribingJson("iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0",{
+  tracker.track_self_describing_event(SelfDescribingJson("iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0",{
       "data":{
         "data": indata
       },
       "schema": "iglu:com.rbox24/"+args.sp_app_id+"/jsonschema/1-0-0"
   }))
 
-  t.flush()
+  #tracker.flush()
   print "Tweet sent to collector, time:",time.time()
 
 class StdOutListener(StreamListener):
@@ -108,7 +114,7 @@ class StdOutListener(StreamListener):
                        "geo_enabled":message.get("user").get("geo_enabled"),
                        "user_name":message.get("user").get("name"),
                        "retweet_count":message.get("retweet_count"),
-                       "datab64":data_b64,
+                       #"datab64":data_b64,
                        "lang":lang}
             if args.restrict_source == "yes":
               follow_arr0 = args.follow.split(",")
@@ -123,6 +129,8 @@ class StdOutListener(StreamListener):
               #print payload
       except Exception, Argument:
           print "Unexpected Error!", Argument
+          if str(Argument).find("'ascii' codec can't encode character") == -1:
+            raise
           #print data
           #print payload
       return True
@@ -161,6 +169,12 @@ if __name__ == '__main__':
   print "sp_collector_method:",args.sp_collector_method
   print "sp_app_id:",args.sp_app_id
   print "--"
+
+  print "Tracker setup..."
+  global emiter
+  global tracker
+  emiter = Emitter(endpoint=args.sp_collector_uri, protocol=args.sp_collector_protocol, port=int(args.sp_collector_port), method=args.sp_collector_method)
+  tracker = Tracker(emitters=emiter,namespace="cf",app_id=args.sp_app_id,encode_base64=True)
 
   print "Starting listening to Twitter..."
 
