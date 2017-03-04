@@ -89,7 +89,7 @@ class StdOutListener(StreamListener):
           key = str(screen_name)+str(lang)+str(location)
           payload = aggregates.get(key)
           if not payload:
-            aggregates[key] = {"filter":args.filter,"timestamp":int(time.time())*1000,"count":1, "screen_name":screen_name, "location":str(location), "lang":str(lang)}
+            aggregates[key] = {"follow":args.follow,"track":"None","timestamp":int(time.time())*1000,"count":1, "screen_name":screen_name, "location":str(location), "lang":str(lang)}
           else:
             count = payload.get("count")
             count += 1
@@ -98,8 +98,8 @@ class StdOutListener(StreamListener):
             aggregates[key] = payload
 
           #print period_counter+int(args.period),int(time.time())
-          for i in aggregates.items():
-            print i[1]
+          #for i in aggregates.items():
+          #  print i[1]
           # Save
           if period_counter+int(args.period) < int(time.time()+randint(0,60)):
             period_counter = int(time.time()) 
@@ -125,10 +125,10 @@ if __name__ == '__main__':
   parser.add_argument('--access_token_secret', default="")
   parser.add_argument('--consumer_key', default="")
   parser.add_argument('--consumer_secret', default="")
-  parser.add_argument('--filter', default="bitcoin")
+  parser.add_argument('--follow', default="2193645284")
   parser.add_argument('--show_raw', default="no")
   parser.add_argument('--save', default="no")
-  parser.add_argument('--period', default="150")
+  parser.add_argument('--period', default="600")
   parser.add_argument('--sp_collector_uri', default="example.com")
   parser.add_argument('--sp_collector_protocol', default="https")
   parser.add_argument('--sp_collector_port', default="444")
@@ -140,7 +140,7 @@ if __name__ == '__main__':
   print "access_token_secret:",args.access_token_secret
   print "consumer_key:",args.consumer_key
   print "consumer_secret:",args.consumer_secret
-  print "filter:",args.filter
+  print "follow:",args.follow
   print "show_raw:",args.show_raw
   print "save:",args.save
   print "period:",args.period
@@ -168,10 +168,7 @@ if __name__ == '__main__':
   auth.set_access_token(args.access_token, args.access_token_secret)
   stream = Stream(auth, l)
 
-  filter_arr = args.filter.split(",")
-  print "filter_arr:",filter_arr
+  follow_arr = args.follow.split(",")
+  print "follow_arr:",follow_arr
 
-  stream.filter(track=filter_arr)
-
-
-
+  stream.filter(follow=follow_arr)
