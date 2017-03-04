@@ -1,4 +1,3 @@
 *.log
-env.sh
-submit.sh
-
+env*.sh
+submit*.sh
