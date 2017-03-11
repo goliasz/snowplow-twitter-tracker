@@ -62,7 +62,7 @@ def save_tweet(data):
       "schema": "iglu:com.rbox24/"+args.sp_app_id+"/jsonschema/1-0-0"
   }))
 
-  #tracker.flush()
+  tracker.flush()
   print "Tweet sent to collector, time:",time.time()
 
 class StdOutListener(StreamListener):
