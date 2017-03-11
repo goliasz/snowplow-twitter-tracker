@@ -42,7 +42,8 @@ def save_tweet(data):
   global tracker
   print "save_tweet:",__name__
   #print data
-  
+
+  indata["app_id"] = args.sp_app_id  
 
   indata = data
 
